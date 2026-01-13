@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Label Printer (78x50mm) + QR</title>
+    <title>Label Printer (Multi-Size) + QR</title>
     <!-- Import Font Kantumruy Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,12 +21,12 @@
                         sans: ['"Kantumruy Pro"', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#6366f1', /* Indigo 500 */
-                        secondary: '#0ea5e9', /* Sky 500 */
-                        success: '#10b981', /* Emerald 500 */
-                        danger: '#f43f5e', /* Rose 500 */
-                        warning: '#f59e0b', /* Amber 500 */
-                        dark: '#0f172a',    /* Slate 900 */
+                        primary: '#6366f1',
+                        secondary: '#0ea5e9',
+                        success: '#10b981',
+                        danger: '#f43f5e',
+                        warning: '#f59e0b',
+                        dark: '#0f172a',
                     }
                 }
             }
@@ -45,7 +45,7 @@
             
             /* Border Line Margins */
             --border-margin-left: 0mm;
-            --border-margin-right: 2mm; /* Default padding-left */
+            --border-margin-right: 2mm; 
         }
 
         html, body {
@@ -81,13 +81,13 @@
             border-radius: 4px;
             color: #000;
             flex-shrink: 0;
+            transition: width 0.3s, height 0.3s; /* Smooth resize */
         }
 
         /* QR Label Fixes */
         #qr-label-container { 
             align-items: center; justify-content: center; text-align: center; flex-direction: column; 
             padding: 4mm;
-            /* Margins for QR page */
             padding-top: calc(4mm + var(--page-margin-top));
             padding-right: calc(4mm + var(--page-margin-right));
             padding-bottom: calc(4mm + var(--page-margin-bottom));
@@ -96,7 +96,6 @@
         }
 
         .label-header {
-            /* Removed border-bottom here, using separate div */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -109,11 +108,10 @@
             overflow: hidden;
         }
 
-        /* Explicit Header Separator Line */
         .header-separator {
             width: 100%;
-            height: 1.5px; /* Thickness */
-            background-color: #000; /* Color */
+            height: 1.5px;
+            background-color: #000;
             margin-bottom: 1mm;
         }
 
@@ -131,7 +129,8 @@
         .info-block.right {
             text-align: right;
             border-left: 1px solid #000; 
-            padding-left: 2mm;
+            margin-left: var(--border-margin-left);
+            padding-left: var(--border-margin-right);
             width: 40%;
         }
         .info-block.left { width: 60%; padding-right: 1mm; }
@@ -142,12 +141,12 @@
         #label-location { font-size: 10pt; font-weight: 700; line-height: 1.1; } 
         .data-text { font-size: 9pt; font-weight: 700; line-height: 1.1; } 
         
-        /* Updated Shop Name Style: Right aligned, small, not bold */
+        /* Updated Shop Name Style: Align Right to match Date */
         #label-page-name { 
-            font-size: 7.5pt; 
-            font-weight: 700; 
+            font-size: 6pt;        
+            font-weight: 400;      
             margin-bottom: 1mm; 
-            text-align: left; /* Changed to Left */
+            text-align: right;     /* Changed from left to right */
         }
 
         .compact-mt { margin-top: 0.5mm; } 
@@ -164,7 +163,6 @@
         }
         #label-total-value { font-size: 10pt; }
 
-        /* --- COD TAG STYLES (UPDATED: Black Border Box with !important) --- */
         .cod-tag { 
             font-size: 7pt; 
             font-weight: 800; 
@@ -172,7 +170,6 @@
             background-color: #FFFFFF; 
             padding: 0.5mm 1mm;
             margin-top: 1mm; 
-            /* Added Black Border with !important to force visibility */
             border: 1.5px solid #000 !important; 
             border-radius: 4px; 
             display: inline-block; 
@@ -189,6 +186,28 @@
             width: 100%; 
         }
 
+        /* --- 80x60 SPECIFIC STYLES --- */
+        .layout-80x60 .label-header {
+            align-items: center;
+        }
+        
+        .layout-80x60 #label-store {
+            /* Store Name BIG */
+            font-size: 14pt !important;
+            font-weight: 800 !important;
+        }
+
+        .layout-80x60 #label-page-name {
+            /* Page Name SMALL */
+            font-size: 5pt !important;
+            opacity: 0.8;
+            text-align: right; /* Ensure it stays right aligned */
+        }
+        
+        .layout-80x60 .big-text { font-size: 11pt; }
+        .layout-80x60 #label-address { max-height: 38px; }
+
+
         #qrcode img { margin: 0 auto; display: block; border: 1px solid #000; padding: 2px; background: white; }
         .qr-title { font-size: 11pt; font-weight: 800; margin-bottom: 2mm; text-transform: uppercase; }
         .qr-footer-box { 
@@ -203,12 +222,10 @@
             #labels-wrapper { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
             .label-page { width: 100%; height: 100%; margin: 0 !important; border: none !important; box-shadow: none !important; overflow: hidden !important; page-break-after: always; color: #000 !important; }
             .total-box { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            /* Ensure COD border prints */
             .cod-tag { border: 1.5px solid #000 !important; } 
             .qr-footer-box { border: 1px solid #000 !important; }
             .hidden-on-print, .no-print, #styleEditor { display: none !important; }
             .info-block.right { border-left: 1px solid #000 !important; }
-            /* Explicitly set header border for printing */
             .header-separator { background-color: #000 !important; height: 1.5px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
         body { background-color: #0f172a; padding: 2rem 1rem; }
@@ -225,25 +242,36 @@
     <div class="no-print max-w-md mx-auto p-6 bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl mb-8">
         <div class="text-center mb-6">
             <h1 class="text-2xl font-bold text-white mb-1">🖨️ Label Printer</h1>
-            <p class="text-sm text-slate-400">ប្រព័ន្ធបង្កើតស្លាកដឹកជញ្ជូន (78mm x 50mm)</p>
+            <p class="text-sm text-slate-400">ប្រព័ន្ធបង្កើតស្លាកដឹកជញ្ជូន (Multi-Size)</p>
         </div>
 
         <!-- Size Controls -->
         <div class="bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-700">
             <h2 class="text-sm font-bold text-slate-300 mb-3">ជម្រើសទំហំ Label (mm)</h2>
-            <div class="flex items-center gap-6">
-                <label class="flex items-center cursor-pointer text-slate-300 text-sm"><input type="radio" name="label_size" value="standard" checked class="mr-2"> Standard (78x50)</label>
-                <label class="flex items-center cursor-pointer text-slate-300 text-sm"><input type="radio" name="label_size" value="custom" class="mr-2"> Custom</label>
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-6">
+                    <label class="flex items-center cursor-pointer text-slate-300 text-sm">
+                        <input type="radio" name="label_size" value="standard" checked class="mr-2"> Standard (78x50)
+                    </label>
+                    <label class="flex items-center cursor-pointer text-slate-300 text-sm">
+                        <input type="radio" name="label_size" value="large" class="mr-2"> Large (80x60)
+                    </label>
+                </div>
+                <div>
+                    <label class="flex items-center cursor-pointer text-slate-300 text-sm">
+                        <input type="radio" name="label_size" value="custom" class="mr-2"> Custom Size
+                    </label>
+                </div>
             </div>
             <div id="custom-size-inputs" class="hidden grid grid-cols-2 gap-3 mt-2">
-                <input type="number" id="customWidth" value="78" class="custom-input w-full rounded p-2 text-xs">
-                <input type="number" id="customHeight" value="50" class="custom-input w-full rounded p-2 text-xs">
+                <input type="number" id="customWidth" value="78" class="custom-input w-full rounded p-2 text-xs" placeholder="W">
+                <input type="number" id="customHeight" value="50" class="custom-input w-full rounded p-2 text-xs" placeholder="H">
             </div>
         </div>
 
         <!-- Margin Controls -->
         <div class="bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-700">
-            <h2 class="text-sm font-bold text-slate-300 mb-3">ការកំណត់ Margin (mm) - សម្រាប់ Label ព័ត៌មាន</h2>
+            <h2 class="text-sm font-bold text-slate-300 mb-3">ការកំណត់ Margin (mm)</h2>
             <div class="grid grid-cols-2 gap-3 mb-3">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">ខាងលើ (Top)</label>
@@ -254,7 +282,7 @@
                     <input type="number" id="marginLeft" value="0" step="0.5" class="custom-input w-full rounded p-2 text-xs text-center">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-3 mb-3">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">ខាងក្រោម (Bottom)</label>
                     <input type="number" id="marginBottom" value="0" step="0.5" class="custom-input w-full rounded p-2 text-xs text-center">
@@ -262,6 +290,16 @@
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">ខាងស្តាំ (Right)</label>
                     <input type="number" id="marginRight" value="0" step="0.5" class="custom-input w-full rounded p-2 text-xs text-center">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Line ឆ្វេង (Line Left)</label>
+                    <input type="number" id="borderMarginLeft" value="0" step="0.5" class="custom-input w-full rounded p-2 text-xs text-center">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Line ស្ដាំ (Line Right)</label>
+                    <input type="number" id="borderMarginRight" value="2" step="0.5" class="custom-input w-full rounded p-2 text-xs text-center">
                 </div>
             </div>
         </div>
@@ -286,20 +324,19 @@
         <div id="label-container" class="label-page">
             <div class="label-header editable-element" id="label-header-el">
                 <!-- HEADER CONTENT -->
-                <div class="flex items-center justify-center w-full overflow-hidden whitespace-nowrap">
-                    <span id="header-store-group" class="flex items-center hidden">
-                        Store: <span id="label-store">N/A</span>
-                        <span class="mx-1">|</span>
+                <div class="flex items-center justify-center w-full overflow-hidden whitespace-nowrap font-medium">
+                    <span id="header-store-group" class="flex items-center hidden mr-1">
+                        Store: <span id="label-store" class="font-bold mx-1">N/A</span> 
+                        <span class="mx-1 opacity-50">|</span>
                     </span>
 
-                    ID:<span id="label-order-id">...</span>
+                    <span class="opacity-75">ID:</span><span id="label-order-id">...</span>
                     
-                    <span class="mx-1">|</span>
-                    User:<span id="label-user">...</span>
+                    <span class="mx-1 opacity-50">|</span>
+                    <span class="opacity-75">User:</span><span id="label-user">...</span>
                 </div>
             </div>
             
-            <!-- EXPLICIT SEPARATOR LINE -->
             <div class="header-separator"></div>
 
             <div class="info-row" id="info-row-el">
@@ -316,9 +353,10 @@
                 </div>
 
                 <div class="info-block right">
-                    <!-- Shop Name moved here with "Page:" prefix and left align -->
-                    <div id="label-page-name" class="editable-element text-left">Page: Shop Name</div>
+                    <!-- Shop Name moved here (Top), Small, Not Bold -->
+                    <div id="label-page-name" class="editable-element">Shop Name</div>
 
+                    <!-- Date below Shop Name -->
                     <div class="small-text compact-mt editable-element">កាលបរិច្ឆេទ:</div>
                     <div id="label-date" class="data-text editable-element">...</div>
 
@@ -385,22 +423,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let addressDisplay = params.address || '';
     if (mapLink) {
-        // Safe regex replacement for link
         try {
              const escapedLink = mapLink.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
              const linkRegex = new RegExp(escapedLink, 'g');
              addressDisplay = addressDisplay.replace(linkRegex, '').trim();
         } catch(e) {}
-    }
-    if (note) {
-        let cleanNote = note;
-        if (mapLink) {
-             try {
-                const escapedLink = mapLink.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                cleanNote = cleanNote.replace(new RegExp(escapedLink, 'g'), '').trim();
-             } catch(e) {}
-        }
-        if (cleanNote) addressDisplay += ` (${decodeURIComponent(cleanNote)})`;
     }
     
     // ** IMPORTANT: Decode all text params to handle Khmer characters correctly **
@@ -411,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (params.id) {
         // --- REAL DATA MODE ---
         document.getElementById('label-page-name').textContent = "Page: " + safeDecode(params.page || 'N/A');
+        
         document.getElementById('label-user').textContent = safeDecode(params.user || 'N/A');
         document.getElementById('label-order-id').textContent = safeDecode(params.id || 'N/A');
         document.getElementById('label-name').textContent = safeDecode(params.name || 'N/A');
@@ -434,7 +462,6 @@ document.addEventListener('DOMContentLoaded', () => {
             storeGroup.classList.add('hidden');
         }
 
-        // COD Logic
         const paymentVal = (params.payment || '').toLowerCase();
         const codEl = document.getElementById('label-cod');
         if (codEl) {
@@ -449,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = new Date();
         document.getElementById('label-date').textContent = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
     } else {
-         // --- MOCK DATA MODE (Testing without params) ---
+         // --- MOCK DATA MODE ---
         document.getElementById('label-page-name').textContent = "Page: ហាងគំរូ (Demo Shop)";
         document.getElementById('label-user').textContent = "Admin";
         document.getElementById('label-order-id').textContent = "DEMO-123";
@@ -461,16 +488,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('label-payment').textContent = "Unpaid";
         document.getElementById('label-shipping').textContent = "J&T Express";
         
-        // Show Store in Header
         const storeGroup = document.getElementById('header-store-group');
         document.getElementById('label-store').textContent = "Store A";
         storeGroup.classList.remove('hidden');
         
-        // Show COD in Mock Mode
         const codEl = document.getElementById('label-cod');
         codEl.classList.remove('hidden');
         
-        // Date
         const today = new Date();
         document.getElementById('label-date').textContent = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
     }
@@ -480,9 +504,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('printQRButton').classList.remove('hidden');
         document.getElementById('printQRButton').classList.add('flex');
         
-        // Construct Action URL
-        // IMPORTANT: Ensure this points to the correct location of CustomerAction.html on your server
-        const baseUrl = window.location.origin + "/CustomerAction.html"; 
+        // --- UPDATED URL ---
+        const baseUrl = "https://oder-backend-2.onrender.com/CustomerAction.html"; 
+        
         const actionUrl = `${baseUrl}?id=${encodeURIComponent(params.id || '')}&name=${encodeURIComponent(params.name || '')}&phone=${encodeURIComponent(params.phone || '')}&map=${encodeURIComponent(mapLink)}`;
 
         const qrDiv = document.getElementById("qrcode");
@@ -516,15 +540,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const marginBottomInput = document.getElementById('marginBottom');
     const marginRightInput = document.getElementById('marginRight');
 
+    const borderMarginLeftInput = document.getElementById('borderMarginLeft');
+    const borderMarginRightInput = document.getElementById('borderMarginRight');
+
     const savedMarginTop = localStorage.getItem('label_margin_top') || '0';
     const savedMarginLeft = localStorage.getItem('label_margin_left') || '0';
     const savedMarginBottom = localStorage.getItem('label_margin_bottom') || '0';
     const savedMarginRight = localStorage.getItem('label_margin_right') || '0';
     
+    const savedBorderMarginLeft = localStorage.getItem('label_border_margin_left') || '0';
+    const savedBorderMarginRight = localStorage.getItem('label_border_margin_right') || '2';
+
     marginTopInput.value = savedMarginTop;
     marginLeftInput.value = savedMarginLeft;
     marginBottomInput.value = savedMarginBottom;
     marginRightInput.value = savedMarginRight;
+    
+    borderMarginLeftInput.value = savedBorderMarginLeft;
+    borderMarginRightInput.value = savedBorderMarginRight;
     
     function updateRootVars() {
         const root = document.documentElement;
@@ -532,16 +565,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const ml = marginLeftInput.value || 0;
         const mb = marginBottomInput.value || 0;
         const mr = marginRightInput.value || 0;
+        
+        const bml = borderMarginLeftInput.value || 0;
+        const bmr = borderMarginRightInput.value || 0;
 
         root.style.setProperty('--page-margin-top', mt + 'mm');
         root.style.setProperty('--page-margin-left', ml + 'mm');
         root.style.setProperty('--page-margin-bottom', mb + 'mm');
         root.style.setProperty('--page-margin-right', mr + 'mm');
         
+        root.style.setProperty('--border-margin-left', bml + 'mm');
+        root.style.setProperty('--border-margin-right', bmr + 'mm');
+        
         localStorage.setItem('label_margin_top', mt);
         localStorage.setItem('label_margin_left', ml);
         localStorage.setItem('label_margin_bottom', mb);
         localStorage.setItem('label_margin_right', mr);
+        
+        localStorage.setItem('label_border_margin_left', bml);
+        localStorage.setItem('label_border_margin_right', bmr);
     }
     
     updateRootVars();
@@ -550,6 +592,54 @@ document.addEventListener('DOMContentLoaded', () => {
     marginLeftInput.addEventListener('input', updateRootVars);
     marginBottomInput.addEventListener('input', updateRootVars);
     marginRightInput.addEventListener('input', updateRootVars);
+    
+    borderMarginLeftInput.addEventListener('input', updateRootVars);
+    borderMarginRightInput.addEventListener('input', updateRootVars);
+
+    // --- SIZE CONTROL LOGIC (UPDATED) ---
+    const sizeRadios = document.querySelectorAll('input[name="label_size"]');
+    const customInputs = document.getElementById('custom-size-inputs');
+    const customW = document.getElementById('customWidth');
+    const customH = document.getElementById('customHeight');
+    const labelPage = document.getElementById('label-container');
+    const root = document.documentElement;
+
+    function updateSize() {
+        const selected = document.querySelector('input[name="label_size"]:checked').value;
+        let w, h;
+        
+        // Remove 80x60 class by default
+        labelPage.classList.remove('layout-80x60');
+
+        if (selected === 'standard') {
+            w = 78; h = 50;
+            customInputs.classList.add('hidden');
+        } else if (selected === 'large') {
+            w = 80; h = 60;
+            customInputs.classList.add('hidden');
+            // Add specific class for 80x60 styling
+            labelPage.classList.add('layout-80x60');
+        } else {
+            w = customW.value; h = customH.value;
+            customInputs.classList.remove('hidden');
+        }
+        
+        root.style.setProperty('--page-width', w + 'mm');
+        root.style.setProperty('--page-height', h + 'mm');
+        
+        // Update QR label size too to match
+        root.style.setProperty('--page-width', w + 'mm');
+        // If you want QR label to also change size:
+        // document.getElementById('qr-label-container').style.width = w + 'mm';
+        // document.getElementById('qr-label-container').style.height = h + 'mm';
+    }
+
+    sizeRadios.forEach(r => r.addEventListener('change', updateSize));
+    customW.addEventListener('input', updateSize);
+    customH.addEventListener('input', updateSize);
+    
+    // Initialize default size logic
+    updateSize();
 
     // --- DESIGN MODE LOGIC ---
     const designToggle = document.getElementById('designModeToggle');
