@@ -499,28 +499,32 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('label-date').textContent = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
     }
 
-    if (mapLink && mapLink !== "undefined" && mapLink !== "null") {
-        document.getElementById('qr-label-container').classList.remove('hidden');
-        document.getElementById('printQRButton').classList.remove('hidden');
-        document.getElementById('printQRButton').classList.add('flex');
-        
-        // --- UPDATED URL ---
-        const baseUrl = "https://oder-backend-2.onrender.com/CustomerAction.html"; 
-        
-        const actionUrl = `${baseUrl}?id=${encodeURIComponent(params.id || '')}&name=${encodeURIComponent(params.name || '')}&phone=${encodeURIComponent(params.phone || '')}&map=${encodeURIComponent(mapLink)}`;
+    // --- ALWAYS SHOW QR CODE LOGIC (Updated) ---
+    // Was: if (mapLink && mapLink !== "undefined" && mapLink !== "null") { ... }
+    
+    document.getElementById('qr-label-container').classList.remove('hidden');
+    document.getElementById('printQRButton').classList.remove('hidden');
+    document.getElementById('printQRButton').classList.add('flex');
+    
+    const baseUrl = "https://oder-backend-2.onrender.com/CustomerAction.html"; 
+    
+    // Check mapLink validity for encoding
+    const validMapLink = (mapLink && mapLink !== "undefined" && mapLink !== "null") ? mapLink : "";
+    
+    const actionUrl = `${baseUrl}?id=${encodeURIComponent(params.id || '')}&name=${encodeURIComponent(params.name || '')}&phone=${encodeURIComponent(params.phone || '')}&map=${encodeURIComponent(validMapLink)}`;
 
-        const qrDiv = document.getElementById("qrcode");
-        qrDiv.innerHTML = "";
-        
-        new QRCode(qrDiv, {
-            text: actionUrl, 
-            width: 100, 
-            height: 100,
-            colorDark : "#000000", 
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.M
-        });
-    }
+    const qrDiv = document.getElementById("qrcode");
+    qrDiv.innerHTML = "";
+    
+    new QRCode(qrDiv, {
+        text: actionUrl, 
+        width: 100, 
+        height: 100,
+        colorDark : "#000000", 
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.M
+    });
+
 
     function printSpecificLabel(id) {
         document.querySelectorAll('.label-page').forEach(l => {
